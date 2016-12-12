@@ -1,0 +1,22 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+ .wncu-curr-t {
+    width: 50%;
+    float: left;
+}
+
+.wncu-curr-t .wncu-curr-h th {
+    text-align: right;
+    background-color: #0f5ca9;
+    color: #fff;
+}
+
+.wncu-curr-t tr td {
+    text-align: right;
+}
+
+.wncu-curr-t tr:nth-child(odd){
+    background-color:#f5f5f5;
+}
