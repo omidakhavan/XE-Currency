@@ -35,4 +35,19 @@ class Wncu_Public {
 		wp_enqueue_style( $this->plugin_name, WNCU_URL . '/public/assets/css/wncu-public.css', array(), $this->version, 'all' );
 	}
 
+	/**
+	 * Register the JavaScript for the public area.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_scripts() {
+
+		wp_enqueue_script( $this->plugin_name, WNCU_URL . '/public/assets/js/wncu-public.js', array( 'jquery' ), $this->version, false );
+
+		wp_localize_script( $this->plugin_name , 'adminurl', array(
+			'wncu' => admin_url( 'admin-ajax.php' ), 
+		));
+
+	}
+
 }

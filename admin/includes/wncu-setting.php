@@ -21,8 +21,7 @@ class Wncu_Settings {
         $this->settings_api->admin_init();
     }
     function admin_menu() {
-        add_menu_page( 'XE Currency', 'جدول ارز پرشین پیمنت', 'delete_posts', 'wncu-xe', array($this, 'plugin_page'),'dashicons-chart-line',79
-);
+        add_menu_page( 'XE Currency', 'پرشین پیمنت', 'delete_posts', 'wncu-xe', array($this, 'plugin_page'),'dashicons-chart-line',79 );
     }
     function get_settings_sections() {
         $sections = array(
@@ -33,6 +32,10 @@ class Wncu_Settings {
             array(
                 'id' => 'currencies',
                 'title' => __( 'تنظیمات ارز', 'wncu' )
+            ),
+            array(
+                'id' => 'calculation',
+                'title' => __( 'فرم محاسبه', 'wncu' )
             )
         );
         return $sections;
@@ -496,6 +499,34 @@ class Wncu_Settings {
                 )  
 
             ),
+            'calculation' => array(
+                array(
+                    'name'              => 'wncu_karmozd',
+                    'label'             => __( 'نرخ کارمزد پیش فرض', 'wncu' ),
+                    'desc'              => __( 'تومان', 'wncu' ),
+                    'type'              => 'text'
+                )
+                // array(
+                //     'name'              => 'wncu_pass',
+                //     'label'             => __( 'پسورد', 'wncu' ),
+                //     'desc'              => __( 'پسورد XE را وارد نمایید', 'wncu' ),
+                //     'type'              => 'password'
+                // ),                
+                // array(
+                //     'name'              => 'wncu_tableone',
+                //     'label'             => __( 'تعداد آیتم جدول یک', 'wncu' ),
+                //     'desc'              => __( 'چند آیتم در جدول اول نشان داده شود؟ مثال 6', 'wncu' ),
+                //     'default'           => __( '6', 'wncu' ),
+                //     'type'              => 'number'
+                // )               
+                // array(
+                //     'name'              => 'wncu_tabletow',
+                //     'label'             => __( 'تعداد آیتم جدول دوم', 'wncu' ),
+                //     'desc'              => __( 'چند آیتم در جدول دوم نشان داده شود؟ مثال 7', 'wncu' ),
+                //     'default'           => __( '7', 'wncu' ),
+                //     'type'              => 'number'
+                // )
+            ),   
         );
         return $settings_fields;
     }

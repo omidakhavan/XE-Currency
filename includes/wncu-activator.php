@@ -15,18 +15,25 @@
 class Wncu_Activator {
 
 	public static function activate() {
-	global $wpdb;
-	$charset_collate = $wpdb->get_charset_collate();
-	$table_name = $wpdb->prefix . 'wncu';
 
-	$sql = "CREATE TABLE $table_name (
-		namad CHAR(3) NOT NULL DEFAULT '',
-		arz CHAR(120) NOT NULL,
-		nerkh CHAR(20) NOT NULL,
-		PRIMARY KEY (namad),
-		UNIQUE KEY  namad (namad)
-	) $charset_collate;";
+		$activate_before = get_option( 'wncu_activate' );
+		if ( $activate_before != 'yes' ) {
+				
+			global $wpdb;
+			$charset_collate = $wpdb->get_charset_collate();
+			$table_name = $wpdb->prefix . 'wncu';
 
+			$sql = "CREATE TABLE $table_name (
+				namad CHAR(3) NOT NULL DEFAULT '',
+				arz CHAR(120) NOT NULL,
+				nerkh CHAR(20) NOT NULL,
+				PRIMARY KEY (namad),
+				UNIQUE KEY  namad (namad)
+			) $charset_collate;";
+			update_option( 'wncu_activate', 'yes' );
+		}
+
+	}
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 

@@ -2,21 +2,19 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
- .wncu-curr-t {
-    width: 50%;
-    float: left;
+table.wncu-curr-t { padding-right:10px; float:right; margin: 0 10px; float: right; width: calc(50% - 20px);}
+.wncu-curr-t .wncu-curr-h th, .wncu-curr-t tr td { padding: 10px 20px 10px 0; text-align: right;}
+@media only screen and (max-width: 960px) {
+table.wncu-curr-t { width:100%; float:none; margin-top:20px;}
 }
 
-.wncu-curr-t .wncu-curr-h th {
-    text-align: right;
-    background-color: #0f5ca9;
-    color: #fff;
-}
-
-.wncu-curr-t tr td {
-    text-align: right;
-}
-
-.wncu-curr-t tr:nth-child(odd){
-    background-color:#f5f5f5;
+/**	
+Calculator ***/
+.wncu-calculator-container > select,.wncu-calculator-container > input[type="text"]  {display: inline-block; margin-left:10px;}
+.wncu-calculator-container > label{display: inline-block;position: absolute;top: -30px;font-size: 14px;}
+.wncu-calculator-container > input[type="text"] {min-width: 200px;width: 100%;}
+.wncu-calculationfield {margin-top: 20px; }
+.wncu-calculationresult {display: block; text-align: center; }
+@media (min-width: 468px){
+    .wncu-calculator-container .col-md-2,.wncu-calculator-container .col-md-3,.wncu-calculator-container .col-md-1{float:right;}
 }

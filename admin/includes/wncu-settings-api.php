@@ -1,14 +1,5 @@
 <?php
 
-/**
- * weDevs Settings API wrapper class
- *
- * @version 1.3 (27-Sep-2016)
- *
- * @author Tareq Hasan <tareq@weDevs.com>
- * @link https://tareq.co Tareq Hasan
- * @example example/oop-example.php How to use the class
- */
 if ( !class_exists( 'Wncu_Settings_API' ) ):
 class Wncu_Settings_API {
 
@@ -406,6 +397,24 @@ class Wncu_Settings_API {
         echo $html;
     }
 
+
+    /**
+     * Displays a select box for creating the pages select box
+     *
+     * @param array   $args settings field args
+     */
+    function callback_pages( $args ) {
+
+        $dropdown_args = array(
+            'selected' => esc_attr($this->get_option($args['id'], $args['section'], $args['std'] ) ),
+            'name'     => $args['section'] . '[' . $args['id'] . ']',
+            'id'       => $args['section'] . '[' . $args['id'] . ']',
+            'echo'     => 0
+        );
+        $html = wp_dropdown_pages( $dropdown_args );
+        echo $html;
+    }
+
     /**
      * Sanitize callback for Settings API
      *
@@ -509,7 +518,7 @@ class Wncu_Settings_API {
         ?>
         <div class="metabox-holder">
             <?php foreach ( $this->settings_sections as $form ) { ?>
-                <div id="<?php echo $form['id']; ?>" class="wncu-group" style="display: none;">
+                <div id="<?php echo $form['id']; ?>" class="group" style="display: none;">
                     <form method="post" action="options.php">
                         <?php
                         do_action( 'wsa_form_top_' . $form['id'], $form );
@@ -519,7 +528,7 @@ class Wncu_Settings_API {
                         if ( isset( $this->settings_fields[ $form['id'] ] ) ):
                         ?>
                         <div style="padding-left: 10px">
-                            <?php submit_button(); ?>
+                           <?php submit_button(); ?>
                         </div>
                         <?php endif; ?>
                     </form>
@@ -543,7 +552,7 @@ class Wncu_Settings_API {
                 $('.wp-color-picker-field').wpColorPicker();
 
                 // Switches option sections
-                $('.wncu-group').hide();
+                $('.group').hide();
                 var activetab = '';
                 if (typeof(localStorage) != 'undefined' ) {
                     activetab = localStorage.getItem("activetab");
@@ -551,9 +560,9 @@ class Wncu_Settings_API {
                 if (activetab != '' && $(activetab).length ) {
                     $(activetab).fadeIn();
                 } else {
-                    $('.wncu-group:first').fadeIn();
+                    $('.group:first').fadeIn();
                 }
-                $('.wncu-group .collapsed').each(function(){
+                $('.group .collapsed').each(function(){
                     $(this).find('input:checked').parent().parent().parent().nextAll().each(
                     function(){
                         if ($(this).hasClass('last')) {
@@ -577,7 +586,7 @@ class Wncu_Settings_API {
                     if (typeof(localStorage) != 'undefined' ) {
                         localStorage.setItem("activetab", $(this).attr('href'));
                     }
-                    $('.wncu-group').hide();
+                    $('.group').hide();
                     $(clicked_group).fadeIn();
                     evt.preventDefault();
                 });

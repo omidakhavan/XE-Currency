@@ -39,7 +39,7 @@ class Wncu_Core {
 		$this->version = '1.0.0';
 		$this->load_dependencies();
 		$this->set_locale();
-		// $this->define_admin_hooks();
+		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
 	/**
@@ -63,14 +63,20 @@ class Wncu_Core {
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		// require_once WNCU_DIR . 'admin/wncu-admin.php';
+		require_once WNCU_DIR . 'admin/wncu-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
 		require_once WNCU_DIR . 'public/wncu-public.php';
-		$this->loader = new Wncu_Loader();
+		$this->loader = new Wncu_Loader();		
+
+		/**
+		 * Online calculation class
+		 */
+		require_once WNCU_DIR . 'public/wncu-ajax.php';
+		new Wncu_Ajax();
 
 		/**
 		 * Call To Option Page Panel
@@ -113,11 +119,11 @@ class Wncu_Core {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	// private function define_admin_hooks() {
-	// 	$plugin_admin = new Wncu_Admin( $this->get_plugin_name(), $this->get_version() );
-	// 	$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-	// 	$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-	// }
+	private function define_admin_hooks() {
+		$plugin_admin = new Wncu_Admin( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+	}
 
 	/**
 	 * Register all of the hooks related to the public-facing functionality
@@ -129,6 +135,7 @@ class Wncu_Core {
 	private function define_public_hooks() {
 		$plugin_public = new Wncu_Public( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 	}
 
 	/**

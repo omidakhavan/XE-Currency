@@ -42,7 +42,7 @@ class Wncu_Admin {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, WNCU_DIR . 'admin/assets/css/plugin-name-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, WNCU_URL . '/admin/assets/css/wncu-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -53,7 +53,7 @@ class Wncu_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, WNCU_DIR . 'admin/assets/js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, WNCU_URL . '/admin/assets/js/wncu-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 

@@ -14,12 +14,17 @@ class Wncu_Shortcodes {
 	function __construct() {
 
 		add_shortcode('wncu', array( $this, 'wncu_shortcode' ) );
+		add_shortcode('wncu-calc', array( $this, 'wncu_calc_shortcode' ) );
 
 		add_action( 'vc_before_init', array( $this, 'wncu_vc_shortcode' ) );
+		add_action( 'vc_before_init', array( $this, 'wncu_cal_vc_shortcode' ) );
 				
 	}
 
-	public function wncu_shortcode($atts, $content){
+	/**
+	 *  Shortcode for currency table
+	 */
+	public function wncu_shortcode( $atts, $content ){
 
 		global $wpdb;
 
@@ -82,6 +87,69 @@ class Wncu_Shortcodes {
 		return $out;
 	}
 
+	/**
+	 *  Shortcode for calculation 
+	 */
+	public function wncu_calc_shortcode( $atts, $content ) {
+
+		$result = !empty( get_option( 'wncucalc_from' ) ) ? get_option( 'wncucalc_from' ) : '' ;
+
+		$out = '';
+		// from select box
+		$out .='
+			<div class="wncu-calculator-container col-md-12">
+				<div  class="col-md-3">
+					<label for="wncuaddfrom">از</label>
+					<select name="wncuaddfrom" id="wncuaddfrom">';
+			foreach ( $result['from'] as $key => $value ) : 
+		$out .='		
+						<option value=" '. $value .' "> '. $this->wncu_convert_to_persian ( $value ) .' </option>';
+			endforeach;
+		$out .='	
+					</select>
+				</div>
+			<div  class="col-md-3">
+				<label for="wncutofrom">به</label>
+					<select name="wncutofrom" id="wncutofrom">';
+		// to select box		
+			foreach ( $result['to'] as $key0 => $value0 ) : 
+		$out .='		
+					<option value=" '. $value0 .' "> '.  $this->wncu_convert_to_persian ( $value0 ).' </option>';
+			 endforeach;
+		$out .='	 		
+				</select>
+			</div>';
+
+		// type 
+		$out .='
+		<div  class="col-md-3">
+			<label for="wncutype">نوع حواله</label>
+			<select name="wncutype" id="wncutype">
+				<option value="فوری"> فوری </option>
+				<option value="شرکتی"> شرکتی </option>
+				<option value="شخصی"> شخصی </option>
+			</select>
+		</div>';
+
+		//field for calculation
+		$out .='
+			<div class="col-md-2">
+				<label for="wncu-calculationfield">مقدار ارز برای حواله*</label>
+				<input type="text" name="wncu-calculationfield" id="wncu-calculationfield" >
+			</div>
+			<div class="col-md-1">
+				<a href="#" class="wncu-calculationfield gform_button button">محاسبه</a>
+			</div>
+			<span class="wncu-calculationresult" ></span>
+		</div>
+		';
+			
+		return $out;
+	}
+
+	/**
+	 * Shortcode for currency table
+	 */
 	public function wncu_vc_shortcode() {
 	   vc_map( array(
 	      "name" => __( "جدول ارز وبنوس", "wncu" ),
@@ -98,6 +166,93 @@ class Wncu_Shortcodes {
 
 	      	)
 	   ) );
+	}	
+
+	/**
+	 * Shortcode for calculation
+	 */
+	public function wncu_cal_vc_shortcode() {
+	   vc_map( array(
+	      "name" => __( "محاسبه گر ارز وبنوس", "wncu" ),
+	      "base" => "wncu-calc",
+	      "class" => "",
+	      "category" => __( "Webnus Shortcodes", "wncu"),
+	      "params" => array(
+	      	array(
+	      		'type' => 'textfield',
+	      		'heading' => __( 'محاسبه گر وبنوس', 'wncu' ),
+	      		'param_name' => 'wncu-calc',
+	      		'value' => '[wncu-calc]',
+	      		),
+
+	      	)
+	   ) );
+	}
+
+	/**
+	 *  Convert abbrv to complete currency name 
+	 */
+	public function wncu_convert_to_persian( $val ) {
+
+		switch ( $val ) {
+			case 'USD':
+			return 'دلار آمریکا';	
+
+			case 'AUD':
+			return 'دلار استرالیا';	
+
+			case 'CAD':
+			return 'دلار کانادا';	
+
+			case 'AED':
+			return 'درهم امارات';	
+
+			case 'EUR':
+			return 'پوند انگلیس';	
+
+			case 'GBP':
+			return 'پوند انگلیس';	
+
+			case 'CNY':
+			return 'یوان';	
+
+			case 'HKD':
+			return 'دلار هنگ کنگ';	
+
+			case 'CHF':
+			return 'فرانک سوییس';			
+
+			case 'DKK':
+			return 'کرون دانمارک';
+
+			case 'SEK':
+			return 'کرون سوئد';	
+
+			case 'SGD':
+			return 'دلار سنگاپور';	
+
+			case 'NZD':
+			return 'دلار نیوزیلند';	
+
+			case 'ZAR':
+			return 'راند';	
+
+			case 'CZK':
+			return 'کرون چک';		
+
+			case 'HUF':
+			return 'فورینت';	
+
+			case 'NOK':
+			return 'کرون نروژ';	
+
+			case 'PLN':
+			return 'زلوتی لهستان';					
+
+			case 'RLS':
+			return 'ریال';			
+
+		}
 	}
 
 }

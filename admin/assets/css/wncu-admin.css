@@ -1,0 +1,57 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+.wncuaddfrombtn, .wncutofrombtn,.wncutypebtn {
+    color: #fff;
+    background-color: #00c2e5;
+    padding: 11px 20px;
+    text-decoration: none;
+    transition: all 0.28s ease;
+    -webkit-tranistion: all 0.28s ease;
+     color: #fff;
+}
+.wncuaddfrombtn:hover,.wncutofrombtn:hover ,.wncutypebtn:hover{
+    background-color: #4d4d4d;
+    color: #fff;
+    cursor: pointer;
+}
+
+#wncuaddfrom, #wncutofrom {
+    padding: 2px 5px 2px 103px;
+    margin-right: 20px;
+    height: 42px;
+}
+
+.wncufromfield,.wncutofield {
+    display: inline-block;
+}
+
+.wncu-calccontainer {
+    margin-top:20px;
+/*	margin-left: auto;
+    margin-right: auto;
+    text-align: center;*/
+}
+.wncu-ul-container {
+    padding: 0px 10px 3px 10px;
+    margin-right: 10%;
+    margin-top: 0px;
+    width: 67px;
+}
+
+.wncu-ul-container .wncuremove {
+    display: block;
+    padding-top: 12px;
+    color: #656464;
+}
+
+.wncuremove li {
+    display: inline;
+}
+
+.wncu-type-havale {
+    padding: 9px 17px 10px 40px;
+}
+
+#calculation h2 {display: none;}
