@@ -33,10 +33,8 @@ class Wncu_Activator {
 			update_option( 'wncu_activate', 'yes' );
 		}
 
-	}
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	dbDelta( $sql );
-
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
 	}
 
 }

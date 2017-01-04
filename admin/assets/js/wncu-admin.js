@@ -17,7 +17,7 @@
 			$( '#wncutofield' ).append('<span class="wncuremove"><li value="'+$value+'">'+$value+'</li> X</span>');
 			remove();
 		});
-
+		// remove function 
 		function remove() { 
 			// remove from
 			$('.wncuremove').on( 'click', function() {
@@ -26,6 +26,7 @@
 
 			});
 		}
+		// sortable
 		$('#wncufromfield').sortable();
 		$('#wncutofield').sortable();
 
@@ -41,7 +42,32 @@
 
 			$(this).closest('tr').remove();
 
-		});	
+		});
+
+		// update nwo ajax
+
+		$(".wncu-update-curr").on('click', function() {
+			// Add loading Class to the button
+			$('.wncu-succ').fadeIn('slow');
+
+		    $.ajax( {
+		        type: "POST",
+		        url: wncu.adminajax,
+		        data: {
+		        	action : 'wncuupdate',
+		        	},
+		        success: function(data) {
+		            // Remove the loading Class to the button
+		            $('.wncu-succ').fadeOut('slow');
+		        },
+		        error: function(jqXHR, textStatus, errorThrown) {
+		            // Remove the loading Class to the button
+		            $('.wncu-succ').fadeOut('slow');
+		            alert('ارتباط با سرور قطع شد دوباره تلاش نمایید.')
+		            
+		        }
+		    });
+		});
 
 	});
 

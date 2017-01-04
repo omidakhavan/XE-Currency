@@ -54,7 +54,6 @@ function wncu_calculation_form() {
 		<div class="wncu-calccontainer">
 			<a href="#" class="wncuaddfrombtn">"از"</a>
 			<select name="wncuaddfrom" id="wncuaddfrom">
-			<option value="RLS">ریال</option>
 			<?php foreach ( $results as $key => $value ) : ?>
 				<option value="<?php echo $value['namad']; ?>"><?php echo $value['arz']; ?></option>
 			<?php endforeach; ?>		
@@ -74,7 +73,6 @@ function wncu_calculation_form() {
 		<div class="wncu-calccontainer">
 			<a href="#" class="wncutofrombtn">"به"</a>
 			<select name="wncutofrom" id="wncutofrom">
-			<option value="RLS">ریال</option>
 			<?php foreach ( $results as $key => $value ) : ?>
 				<option value="<?php echo $value['namad']; ?>"><?php echo $value['arz']; ?></option>
 			<?php endforeach; ?>		
@@ -115,13 +113,13 @@ function wncu_calculation_form() {
 	        <tr class="wncu-karmozd wncu-template wncu-row">
 	            <td width="10%"><span class="wncu-move">مرتب کردن</span></td>
 
-	            <td width="10%">درخواست کمتر از</td>
+	            <td width="10%">کمتر از</td>
 				
 	            <td width="30%">
 	                <input type="text" class="wncu-karmozd-input" name="an-input-field[{{row-count-placeholder}}]" />
 	            </td>	            
 
-	            <td width="10%">نرخ درصد کارمزد</td>
+	            <td width="10%">واجد کارمزد</td>
 
 	            <td width="300%">
 	                <input type="text" class="wncu-karmozd-input" name="an-input-field[{{row-count-placeholder}}]" />
@@ -148,13 +146,13 @@ function wncu_calculation_form() {
 	        <tr class="wncu-karmozd">
 	            <td width="10%"><span class="wncu-move">مرتب کردن</span></td>
 
-	            <td width="10%">درخواست کمتر از</td>
+	            <td width="10%">کمتر از</td>
 				
 	            <td width="30%">
 	                <input type="text" class="wncu-karmozd-input" name="an-input-field[{{row-count-placeholder}}]" value="<?php echo $from['karmozd'][$i++]; ?>"  />
 	            </td>	            
 
-	            <td width="10%">نرخ درصد کارمزد</td>
+	            <td width="10%">واحد کارمزد</td>
 
 	            <td width="300%">
 	                <input class="wncu-karmozd-input" type="text" name="an-input-field[{{row-count-placeholder}}]" value="<?php echo $from['karmozd'][$i]; ?>" />
@@ -168,6 +166,20 @@ function wncu_calculation_form() {
 	</div>
         <?php
 }
+
+/**
+ * 	Update button
+ */
+add_action( 'wsa_form_bottom_general_tab', 'wncu_general_form' );
+function wncu_general_form() {
+ echo '
+ 		<div class="wncu-update-container">
+ 			<a href="#" class="wncu-update-curr">بروزرسانی فوری تابلو</a>
+ 			<p> اگر میخواهید تابلو ارز همین حالا با تنظیمات جدید بروزرسانی شود این دکمه را بفشارید در غیر اینصورت تابلو طبق برنامه بروز خواهد شد. </p> 
+ 		</div>
+ 		<div class="wncu-succ"></div>';
+}
+
 
 /**
  * Get data from calculation page

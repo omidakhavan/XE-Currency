@@ -2,10 +2,11 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
-table.wncu-curr-t { padding-right:10px; float:right; margin: 0 10px; float: right; width: calc(50% - 20px);}
+.wncu-curr-t { padding-right:10px; float:right; margin: 0 10px; float: right; width: calc(50% - 20px);}
 .wncu-curr-t .wncu-curr-h th, .wncu-curr-t tr td { padding: 10px 20px 10px 0; text-align: right;}
+.wncu-warning-msg {display: block; text-align: center; margin-bottom: 20px; font-weight: 300; font-size: 16px; }
 @media only screen and (max-width: 960px) {
-table.wncu-curr-t { width:100%; float:none; margin-top:20px;}
+	.wncu-curr-t { width:100%; float:none; margin-top:20px;}
 }
 
 /**	

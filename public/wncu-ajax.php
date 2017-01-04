@@ -20,9 +20,22 @@ class Wncu_Ajax {
 				
 	}
 	public function test(){
+		// get condition s
+		$condition = !empty( get_option( 'wncucalc_from' ) ) ? get_option( 'wncucalc_from' ) :'';
+
+		// filter condtions
+		$condition['karmozd'] = array_values( array_diff( $condition['karmozd']  , array( '' ) ) );
+
+		// get expersion value
+		foreach( $condition['karmozd'] as $key => $value) if( ! ($key&1) ) unset($condition['karmozd'][$key]);
+		// $splited_exp =  array_values ( $condition['karmozd'] );
+
+		// sorting values from lower to up
+		// $sorted_exp = sort( $splited_exp );
+
 		?>
 		<pre>
-		<?php var_dump( get_option( 'wncu_ajax' ) ); ?>
+		<?php var_dump(get_option( 'wncu_ajax' ) );  ?>
 		</pre>
 		<?php
 	}
@@ -31,8 +44,7 @@ class Wncu_Ajax {
 
 		global $wpdb;
 
-		// if ( !isset( $_REQUEST['amont'] ) ) die('amount not set.');
-		
+		// get values
 		$from = trim( $_REQUEST['from'] );
 
 		$to   = trim( $_REQUEST['to'] );
@@ -41,16 +53,98 @@ class Wncu_Ajax {
 
 		$amont= trim( $_REQUEST['amont'] );
 
+		// if ( !isset( $_REQUEST['amont'] ) ) die('amount not set.');
+		$wncu_warning = wncu_get_option( 'wncu_warning', 'general_tab' );
+
+		// get rate of from 
 		$resfrom = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $from ) );
-		$a = $amont * $resfrom['0'];
-		echo 'قیمت برای شما '.$a;
+		// gate rate of to
+		$resto = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $to ) );
 
-		// update_option( 'wncu_ajax', $resfrom);
-		// $need_calc = $_REQUEST ;
-		// $need_calc['from'];
+		// if warning set to on skip and die
+		if ( $wncu_warning == 'on' ) { 
+			echo 'ارایه قیمت مقدور نمی باشد لطفا تماس بگیرید.'; 
+			exit(); 
+		} 
+
+		// when currency dont have value exit
+		if ( !isset( $resfrom['0'] ) && empty( $resfrom['0'] ) && $from !== 'RIAL' || !isset( $resto['0'] ) && empty( $resto['0'] ) &&  $to !== 'RIAL' ) {
+			echo 'برای اطلاع از ارز درخواستی لطفا تماس بگیرید.'; 
+			exit();
+		}
 
 
+		$resultc = ( $to == 'RIAL') ? $resfrom['0'] : $resto['0'] ;  
+		$a_calc =   ceil ( ( $amont / $resultc ) - 50 );
+		// calculation amount for id upper than $10000 exit
+		if ( $from != 'CAD' && $to != 'CAD' && $type == 'شخصی' && $a_calc > '10000' ) { 
+			echo 'حواله شخصی بالاتر از 10 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد. (بجز دلار کانادا).';
+			exit();
+		}
 
+		// calculate currency with conidtions from rial to any
+		if ( $to !== 'CAD' && $from !== 'CAD' && $type == 'شخصی' && $to !== 'RIAL' ) {
+
+			// get condition s
+			$condition = !empty( get_option( 'wncucalc_from' ) ) ? get_option( 'wncucalc_from' ) :'';
+
+			// filter condtions
+			$condition['karmozd'] = array_values( array_diff( $condition['karmozd']  , array( '' ) ) );
+			$karmozd = $condition['karmozd'];
+
+			// get expersion value
+			foreach( $condition['karmozd'] as $key => $value ) if( $key&1 ) unset( $condition['karmozd'][$key] );
+			$splited_exp =  array_values ( $condition['karmozd'] );
+
+			// get karmozd value
+			foreach( $karmozd as $key0 => $value0 ) if( !($key0&1) ) unset( $karmozd[$key0] );
+			$splited_karmozd = array_values( $karmozd );
+
+			// sorting values from lower to up
+			sort( $splited_exp );
+			sort( $splited_karmozd );
+			$count = count( $splited_exp );
+			for ( $i=0; $i < $count ; $i++ ) { 
+				if ( $splited_exp[$i] > $a_calc ) {
+					$result =  number_format ( ( $amont / $resultc ) + ( $splited_karmozd[$i] ) );
+					echo  $to . ' ' .  $result ;
+					break;				
+				}
+			}
+		}
+
+		// calculate currency for cad
+		if ( $to == 'CAD' && $type == 'شخصی' ) {
+			if ( $a_calc > '100000' ) {
+				echo 'حواله شخصی بالاتر از 100 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد.';
+				exit();
+			} else {
+				$result =  number_format ( ( $amont / $resultc ) + 30 );
+				echo $to . ' ' . $result ;
+				exit();
+			}
+		}
+
+		// sherkati 
+		if ( $type == 'شرکتی' && $to !== 'RIAL' ) {
+			$result = number_format ( ( $amont / $resultc ) + 50 );
+			echo $to . ' ' .  $result ;
+			exit();
+		}
+
+		// any currency to rial 
+		if ( $to == 'RIAL' ) {
+			$result =  number_format ( ( $amont + 30 ) * $resultc );
+			echo $result  . ' تومان'  ;
+			exit();
+		}
+
+		exit();
+	}
+
+	public function ceil_dec( $in,$prec ) {
+		$fact = pow(10,$prec);
+		return ceil($fact*$in)/$fact;
 	}
 
 }

@@ -27,11 +27,11 @@ class Wncu_Settings {
         $sections = array(
             array(
                 'id' => 'general_tab',
-                'title' => __( 'تنظیمات کانکشن', 'wncu' )
+                'title' => __( 'تنظیمات عمومی', 'wncu' )
             ),            
             array(
                 'id' => 'currencies',
-                'title' => __( 'تنظیمات ارز', 'wncu' )
+                'title' => __( 'تابلو ارز', 'wncu' )
             ),
             array(
                 'id' => 'calculation',
@@ -67,14 +67,37 @@ class Wncu_Settings {
                     'desc'              => __( 'چند آیتم در جدول اول نشان داده شود؟ مثال 6', 'wncu' ),
                     'default'           => __( '6', 'wncu' ),
                     'type'              => 'number'
-                )               
-                // array(
-                //     'name'              => 'wncu_tabletow',
-                //     'label'             => __( 'تعداد آیتم جدول دوم', 'wncu' ),
-                //     'desc'              => __( 'چند آیتم در جدول دوم نشان داده شود؟ مثال 7', 'wncu' ),
-                //     'default'           => __( '7', 'wncu' ),
-                //     'type'              => 'number'
-                // )
+                ),                  
+                array(
+                    'name'              => 'wncu_usd_havale',
+                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                    'desc'              => __( '', 'wncu' ),
+                    'type'              => 'number'
+                ),
+                array(
+                    'name'              => 'wncu_fetchhavale',
+                    'label'             => __( 'استخراج اتوماتیک', 'wncu' ),
+                    'desc'              => __( 'در صورت فعال بودن, نرخ حواله ( در صورت مجود بودن ) جایگزین نرخ حواله دستی میشود.', 'wncu' ),
+                    'type'              => 'checkbox'
+                ),                   
+                array(
+                    'name'              => 'wncu_warning',
+                    'label'             => __( 'شرایط اضطرار', 'wncu' ),
+                    'desc'              => __( 'حذف تمامی قیمتهای جدول و نمایش پیغام اضطری "تماس بگیرید".', 'wncu' ),
+                    'type'              => 'checkbox'
+                ),                     
+                array(
+                    'name'              => 'wncu_msg',
+                    'label'             => __( 'پیغام بالای تابلو', 'wncu' ),
+                    'desc'              => __( 'اگر شرایط اضطرار فعال باشد در مقابل نرخ های جدول " لطفا تماس بگیرید " نمایش داده خواهد شد همینطور با این کادر امکان نشان دادن پیغامی بالای جدول امکانپذیر است ( این پیغام در صورتی که گزینه ی بالا فعال باشد نشان داده میشود ).', 'wncu' ),
+                    'type'              => 'text'
+                ),
+                array(
+                    'name'              => 'wncu_nightmode',
+                    'label'             => __( 'فعال کردن حال شب', 'wncu' ),
+                    'desc'              => __( 'در صورت فعال بودن این گزینه سیستم به صورت هوشمند به XE هیت خواهد زد اگر این گزینه غیر فعال باشد به صورت منظم طبق زمانبندی داده شده هیت خواهد زد', 'wncu' ),
+                    'type'              => 'checkbox'
+                )
             ),         
             'currencies' => array(
                 array(
@@ -89,12 +112,12 @@ class Wncu_Settings {
                     'default'              => __( 'USD', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_usd_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_usd_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_usd_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -119,12 +142,12 @@ class Wncu_Settings {
                     'default'              => __( 'CAD', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_cad_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_cad_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_cad_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -149,12 +172,12 @@ class Wncu_Settings {
                     'default'              => __( 'EUR', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_eur_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_eur_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_eur_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -179,12 +202,12 @@ class Wncu_Settings {
                     'default'              => __( 'GBP', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_gbp_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_gbp_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_gbp_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -209,12 +232,12 @@ class Wncu_Settings {
                     'default'              => __( 'AUD', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_aud_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_aud_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_aud_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -239,12 +262,12 @@ class Wncu_Settings {
                     'default'              => __( 'CNY', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_cny_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_cny_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_cny_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -269,12 +292,12 @@ class Wncu_Settings {
                     'default'              => __( 'AED', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_aed_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_aed_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_aed_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -299,12 +322,12 @@ class Wncu_Settings {
                     'default'              => __( 'HKD', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_hkd_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_hkd_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_hkd_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -329,12 +352,12 @@ class Wncu_Settings {
                     'default'              => __( 'CHF', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_chf_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_chf_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_chf_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -359,12 +382,12 @@ class Wncu_Settings {
                     'default'              => __( 'DKK', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_dkk_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_dkk_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_dkk_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -389,12 +412,12 @@ class Wncu_Settings {
                     'default'              => __( 'SEK', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_sek_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_sek_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_sek_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -419,12 +442,12 @@ class Wncu_Settings {
                     'default'              => __( 'SGD', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_sgd_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_sgd_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_sgd_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -449,12 +472,12 @@ class Wncu_Settings {
                     'default'              => __( 'NZD', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_nzd_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_nzd_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_nzd_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),
@@ -479,12 +502,12 @@ class Wncu_Settings {
                     'default'              => __( 'ZAR', 'wncu' ),
                     'type'              => 'text'
                 ),
-                array(
-                    'name'              => 'wncu_zar_havale',
-                    'label'             => __( 'نرخ حواله بازار', 'wncu' ),
-                    'desc'              => __( '', 'wncu' ),
-                    'type'              => 'text'
-                ),               
+                // array(
+                //     'name'              => 'wncu_zar_havale',
+                //     'label'             => __( 'نرخ حواله بازار', 'wncu' ),
+                //     'desc'              => __( '', 'wncu' ),
+                //     'type'              => 'text'
+                // ),               
                 array(
                     'name'              => 'wncu_zar_sood',
                     'label'             => __( 'نرخ درصد سود', 'wncu' ),

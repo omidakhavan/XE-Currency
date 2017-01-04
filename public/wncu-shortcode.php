@@ -30,10 +30,18 @@ class Wncu_Shortcodes {
 
 		$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wncu", ARRAY_A  );
 
-		$tableone   = intval( wncu_get_option( 'wncu_tableone', 'general_tab' ) );
+		$tableone     = intval( wncu_get_option( 'wncu_tableone', 'general_tab' ) );
+		$wncu_warning = wncu_get_option( 'wncu_warning', 'general_tab' );
 		// $tabletwo   = intval( wncu_get_option( 'wncu_tableone', 'general_tab' ) );
 
 		$out = '';
+
+		// warning message
+		if ( $wncu_warning == 'on' ) {
+			$wncu_msg = wncu_get_option( 'wncu_msg', 'general_tab' );
+			echo '<span class="wncu-warning-msg">'. $wncu_msg .'</span>';
+		}	
+
 		$count = 0 ;
 
 			$out .= '
@@ -43,8 +51,9 @@ class Wncu_Shortcodes {
 					<th>ارز</th> 
 					<th>نرخ (تومان)</th>
 				</tr>';
+			if ( $wncu_warning != 'on' ) {
 
-				foreach ( $results as $key => $value) {
+				foreach ( $results as $key => $value ) {
 					$count++;
 					$out .= '<tr>';
 					$out .=	'<td class="wncu-curr-abbv"> '.$value['namad'].'</td>';
@@ -55,13 +64,25 @@ class Wncu_Shortcodes {
 					if ( $count > $tableone ) {
 						break;
 					}
-				}	
+				}
+			} else {
+				foreach ( $results as $key => $value) {
+					$count++;
+					$out .= '<tr>';
+					$out .=	'<td class="wncu-curr-abbv">'.$value['namad'].'</td>';
+					$out .=	'<td class="wncu-curr-curr">'.$value['arz'].'</td>';
+					$out .=	'<td class="wncu-curr-rate"> لطفا تماس بگیرید.</td>';
+					$out .= '</tr>';
+					if ( $count > $tableone ) {
+						break;
+					}
+				}
+			}			
 
 				$out .= '
 			</table>';
 
 			// table two
-
 			$out .= '
 			<table class="wncu-curr-ttwo wncu-curr-t">
 				<tr class="wncu-curr-htow wncu-curr-h">
@@ -69,6 +90,7 @@ class Wncu_Shortcodes {
 					<th>ارز</th> 
 					<th>نرخ (تومان)</th>
 				</tr>';
+			if ( $wncu_warning != 'on' ) {
 
 				foreach ( array_slice( $results, 7 ) as $key2 => $value2) {
 
@@ -79,6 +101,15 @@ class Wncu_Shortcodes {
 					$out .= '</tr>';
 
 				}	
+			} else {
+				foreach ( array_slice( $results, 7 ) as $key2 => $value2) {
+					$out .= '<tr>';
+					$out .=	'<td class="wncu-curr-abbv">'.$value2['namad'].'</td>';
+					$out .=	'<td class="wncu-curr-curr">'.$value2['arz'].'</td>';
+					$out .=	'<td class="wncu-curr-rate"> لطفا تماس بگیرید.</td>';
+					$out .= '</tr>';
+				}	
+			}	
 
 				$out .= '
 			</table>';
@@ -100,7 +131,8 @@ class Wncu_Shortcodes {
 			<div class="wncu-calculator-container col-md-12">
 				<div  class="col-md-3">
 					<label for="wncuaddfrom">از</label>
-					<select name="wncuaddfrom" id="wncuaddfrom">';
+					<select name="wncuaddfrom" id="wncuaddfrom" class="wncu-calc-select">
+					<option value="RIAL">ریال</option>';
 			foreach ( $result['from'] as $key => $value ) : 
 		$out .='		
 						<option value=" '. $value .' "> '. $this->wncu_convert_to_persian ( $value ) .' </option>';
@@ -110,7 +142,8 @@ class Wncu_Shortcodes {
 				</div>
 			<div  class="col-md-3">
 				<label for="wncutofrom">به</label>
-					<select name="wncutofrom" id="wncutofrom">';
+					<select name="wncutofrom" id="wncutofrom" class="wncu-calc-select">
+					<option value="RIAL">ریال</option>';
 		// to select box		
 			foreach ( $result['to'] as $key0 => $value0 ) : 
 		$out .='		
@@ -125,7 +158,6 @@ class Wncu_Shortcodes {
 		<div  class="col-md-3">
 			<label for="wncutype">نوع حواله</label>
 			<select name="wncutype" id="wncutype">
-				<option value="فوری"> فوری </option>
 				<option value="شرکتی"> شرکتی </option>
 				<option value="شخصی"> شخصی </option>
 			</select>

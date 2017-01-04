@@ -52,8 +52,12 @@ class Wncu_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		wp_enqueue_script( $this->plugin_name, WNCU_URL . '/admin/assets/js/wncu-admin.js', array( 'jquery' ), $this->version, false );
+		if ( $_GET['page'] == 'wncu-xe' ) {
+			wp_enqueue_script( $this->plugin_name, WNCU_URL . '/admin/assets/js/wncu-admin.js', array( 'jquery' ), $this->version, false );
+			wp_localize_script( $this->plugin_name, 'wncu', array(
+				'adminajax' => admin_url( 'admin-ajax.php' )
+			));
+		}
 
 	}
 

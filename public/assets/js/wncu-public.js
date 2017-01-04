@@ -34,5 +34,36 @@
 				}
 			});
 		});
+
+		// validate calculation from 
+		if ( $('#wncuaddfrom').val() == 'RIAL' ) { 
+			$('#wncutofrom option').each(function() {
+				if ( $(this).val() == 'RIAL') { $(this).remove(); }
+			});
+		}
+		var el = [];
+		var arr;
+		$('#wncuaddfrom').change(function() {
+			var $this = $(this);
+			if ( $this.val() == 'RIAL' ) { 
+				$('#wncutofrom').find('option[value="RIAL"]').remove();
+				for ( arr in el ){
+					console.log(arr);
+					$('#wncutofrom').prepend(el[arr]); 
+					
+				}
+			}
+			if ( $this.val() != 'RIAL' ) {
+				var flag = '';
+				$('#wncutofrom option').each(function() {
+					if ( $(this).val() == 'RIAL') { flag = 1 ; }
+				});
+				if ( flag != 1 ) {$('#wncutofrom').prepend('<option value="RIAL">ریال</option>');}
+				$('#wncutofrom option').each(function() {
+					$this = $(this);
+					if ( $this.val() != 'RIAL') {  el.push( $this.detach() ); }
+				});
+			}
+		});		
 	});
 })( jQuery );	
