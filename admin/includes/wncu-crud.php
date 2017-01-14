@@ -65,7 +65,7 @@ class Wncu_Main_Excute {
 			$converttoarray = explode(' ',trim( $getfile ) );
 			$numi = trim( intval(preg_replace('/[^0-9]+/', '', $converttoarray[74]), 10) );
 
-			if ( $numi !== '0' && !empty( $numi ) && !isset( $numi ) ) {
+			if ( $numi !== '0' && !empty( $numi ) && isset( $numi ) &&  NULL !== $numi  ) {
 				$this->set_havale( $numi );			
 			}
 		}

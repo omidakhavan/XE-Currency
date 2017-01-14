@@ -39,7 +39,7 @@ class Wncu_Shortcodes {
 		// warning message
 		if ( $wncu_warning == 'on' ) {
 			$wncu_msg = wncu_get_option( 'wncu_msg', 'general_tab' );
-			echo '<span class="wncu-warning-msg">'. $wncu_msg .'</span>';
+			$out .= '<span class="wncu-warning-msg">'. $wncu_msg .'</span>';
 		}	
 
 		$count = 0 ;
@@ -132,7 +132,7 @@ class Wncu_Shortcodes {
 				<div  class="col-md-3">
 					<label for="wncuaddfrom">از</label>
 					<select name="wncuaddfrom" id="wncuaddfrom" class="wncu-calc-select">
-					<option value="RIAL">ریال</option>';
+					<option value="RIAL">تومان</option>';
 			foreach ( $result['from'] as $key => $value ) : 
 		$out .='		
 						<option value=" '. $value .' "> '. $this->wncu_convert_to_persian ( $value ) .' </option>';
@@ -143,7 +143,7 @@ class Wncu_Shortcodes {
 			<div  class="col-md-3">
 				<label for="wncutofrom">به</label>
 					<select name="wncutofrom" id="wncutofrom" class="wncu-calc-select">
-					<option value="RIAL">ریال</option>';
+					<option value="RIAL">تومان</option>';
 		// to select box		
 			foreach ( $result['to'] as $key0 => $value0 ) : 
 		$out .='		
@@ -240,7 +240,7 @@ class Wncu_Shortcodes {
 			return 'درهم امارات';	
 
 			case 'EUR':
-			return 'پوند انگلیس';	
+			return 'یورو';	
 
 			case 'GBP':
 			return 'پوند انگلیس';	

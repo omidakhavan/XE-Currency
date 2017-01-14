@@ -58,7 +58,7 @@
 				$('#wncutofrom option').each(function() {
 					if ( $(this).val() == 'RIAL') { flag = 1 ; }
 				});
-				if ( flag != 1 ) {$('#wncutofrom').prepend('<option value="RIAL">ریال</option>');}
+				if ( flag != 1 ) {$('#wncutofrom').prepend('<option value="RIAL">تومان</option>');}
 				$('#wncutofrom option').each(function() {
 					$this = $(this);
 					if ( $this.val() != 'RIAL') {  el.push( $this.detach() ); }

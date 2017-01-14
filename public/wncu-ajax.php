@@ -19,7 +19,7 @@ class Wncu_Ajax {
 		// add_action( 'init', array ( $this, 'test' ) );
 				
 	}
-	public function test(){
+	public function test() {
 		// get condition s
 		$condition = !empty( get_option( 'wncucalc_from' ) ) ? get_option( 'wncucalc_from' ) :'';
 
@@ -54,7 +54,9 @@ class Wncu_Ajax {
 		$amont= trim( $_REQUEST['amont'] );
 
 		// if ( !isset( $_REQUEST['amont'] ) ) die('amount not set.');
-		$wncu_warning = wncu_get_option( 'wncu_warning', 'general_tab' );
+		$wncu_warning      = wncu_get_option( 'wncu_warning', 'general_tab' );
+		$defult_karmozd    = wncu_get_option( 'wncu_karmozd', 'calculation' );
+		$condition         = get_option( 'wncucalc_from' );
 
 		// get rate of from 
 		$resfrom = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $from ) );
@@ -74,8 +76,13 @@ class Wncu_Ajax {
 		}
 
 
-		$resultc = ( $to == 'RIAL') ? $resfrom['0'] : $resto['0'] ;  
-		$a_calc =   ceil ( ( $amont / $resultc ) - 50 );
+		$resultc = ( $to == 'RIAL') ? $resfrom['0'] : $resto['0'] ;
+		if ( $resultc == 0 ) {
+		  	echo 'ارز مورد نظر قابل ارایه نمی باشد.';
+			exit();
+		}  
+		
+		$a_calc = isset( $condition['karmozd'] ) ? ceil ( ( $amont / $resultc ) - 50 ) : ceil ( ( $amont / $resultc ) - $defult_karmozd );
 		// calculation amount for id upper than $10000 exit
 		if ( $from != 'CAD' && $to != 'CAD' && $type == 'شخصی' && $a_calc > '10000' ) { 
 			echo 'حواله شخصی بالاتر از 10 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد. (بجز دلار کانادا).';
@@ -84,9 +91,6 @@ class Wncu_Ajax {
 
 		// calculate currency with conidtions from rial to any
 		if ( $to !== 'CAD' && $from !== 'CAD' && $type == 'شخصی' && $to !== 'RIAL' ) {
-
-			// get condition s
-			$condition = !empty( get_option( 'wncucalc_from' ) ) ? get_option( 'wncucalc_from' ) :'';
 
 			// filter condtions
 			$condition['karmozd'] = array_values( array_diff( $condition['karmozd']  , array( '' ) ) );
@@ -127,7 +131,7 @@ class Wncu_Ajax {
 
 		// sherkati 
 		if ( $type == 'شرکتی' && $to !== 'RIAL' ) {
-			$result = number_format ( ( $amont / $resultc ) + 50 );
+			$result = number_format ( ( $amont / $resultc )  );
 			echo $to . ' ' .  $result ;
 			exit();
 		}
