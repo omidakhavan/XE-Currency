@@ -58,8 +58,24 @@ class Wncu_Ajax {
 		$defult_karmozd    = wncu_get_option( 'wncu_karmozd', 'calculation' );
 		$condition         = get_option( 'wncucalc_from' );
 
+		// filter condtions
+		$condition['karmozd'] = array_values( array_diff( $condition['karmozd']  , array( '' ) ) );
+		$karmozd = $condition['karmozd'];
+
+		// get expersion value
+		foreach( $condition['karmozd'] as $key => $value ) if( $key&1 ) unset( $condition['karmozd'][$key] );
+		$splited_exp =  array_values ( $condition['karmozd'] );
+
+		// get karmozd value
+		foreach( $karmozd as $key0 => $value0 ) if( !($key0&1) ) unset( $karmozd[$key0] );
+		$splited_karmozd = array_values( $karmozd );
+
+		// sorting values from lower to up
+		sort( $splited_exp );
+
 		// get rate of from 
 		$resfrom = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $from ) );
+
 		// gate rate of to
 		$resto = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $to ) );
 
@@ -81,8 +97,8 @@ class Wncu_Ajax {
 		  	echo 'ارز مورد نظر قابل ارایه نمی باشد.';
 			exit();
 		}  
-		
-		$a_calc = isset( $condition['karmozd'] ) ? ceil ( ( $amont / $resultc ) - 50 ) : ceil ( ( $amont / $resultc ) - $defult_karmozd );
+
+		$a_calc = isset( $condition['karmozd'] ) ? ceil ( ( $amont / $resultc ) - min($splited_karmozd) ) : ceil ( ( $amont / $resultc ) - $defult_karmozd );
 		// calculation amount for id upper than $10000 exit
 		if ( $from != 'CAD' && $to != 'CAD' && $type == 'شخصی' && $a_calc > '10000' ) { 
 			echo 'حواله شخصی بالاتر از 10 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد. (بجز دلار کانادا).';
@@ -91,22 +107,6 @@ class Wncu_Ajax {
 
 		// calculate currency with conidtions from rial to any
 		if ( $to !== 'CAD' && $from !== 'CAD' && $type == 'شخصی' && $to !== 'RIAL' ) {
-
-			// filter condtions
-			$condition['karmozd'] = array_values( array_diff( $condition['karmozd']  , array( '' ) ) );
-			$karmozd = $condition['karmozd'];
-
-			// get expersion value
-			foreach( $condition['karmozd'] as $key => $value ) if( $key&1 ) unset( $condition['karmozd'][$key] );
-			$splited_exp =  array_values ( $condition['karmozd'] );
-
-			// get karmozd value
-			foreach( $karmozd as $key0 => $value0 ) if( !($key0&1) ) unset( $karmozd[$key0] );
-			$splited_karmozd = array_values( $karmozd );
-
-			// sorting values from lower to up
-			sort( $splited_exp );
-			sort( $splited_karmozd );
 			$count = count( $splited_exp );
 			for ( $i=0; $i < $count ; $i++ ) { 
 				if ( $splited_exp[$i] > $a_calc ) {
