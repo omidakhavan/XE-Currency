@@ -19,3 +19,4 @@ Calculator ***/
 @media (min-width: 468px){
     .wncu-calculator-container .col-md-2,.wncu-calculator-container .col-md-3,.wncu-calculator-container .col-md-1{float:right;}
 }
+input#wncu-calculationfield {border: 1px solid #e1e1e1; padding: 6px 4px; outline: none; -moz-border-radius: 1px; -webkit-border-radius: 1px; border-radius: 1px; color: #888; margin: 0; min-width: 60px; width: 99%; max-width: 100%; min-height: 36px; display: block; margin-bottom: 20px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }

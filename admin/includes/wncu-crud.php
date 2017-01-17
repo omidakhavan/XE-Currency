@@ -21,7 +21,7 @@ class Wncu_Main_Excute {
 		// Add new corn job time
 		add_filter( 'cron_schedules',      array ( $this, 'wncu_my_cron_schedules' ) );
 		add_action( 'admin_init',          array ( $this, 'wncu_define_cornhourly' ) );
-		// add_action( 'init',                array ( $this, 'get_havale_usd' ) );
+		add_action( 'init',                array ( $this, 'get_havale_usd' ) );
 		add_action( 'wp_ajax_wncuupdate',  array ( $this, 'wncu_update_now'        ) );
 
 		add_action( 'wncu_corns_five',     array ( $this, 'wncu_corns_five'        ) );
@@ -65,8 +65,8 @@ class Wncu_Main_Excute {
 			$converttoarray = explode(' ',trim( $getfile ) );
 			$numi = trim( intval(preg_replace('/[^0-9]+/', '', $converttoarray[74]), 10) );
 
-			if ( $numi !== '0' && !empty( $numi ) && isset( $numi ) &&  NULL !== $numi  ) {
-				$this->set_havale( $numi );			
+			if ( $numi != '0' && !empty( $numi ) && isset( $numi ) &&  NULL != $numi  ) {
+				$this->set_havale( $numi );		
 			}
 		}
 

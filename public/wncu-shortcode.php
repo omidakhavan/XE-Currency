@@ -167,7 +167,7 @@ class Wncu_Shortcodes {
 		$out .='
 			<div class="col-md-2">
 				<label for="wncu-calculationfield">مقدار ارز برای حواله*</label>
-				<input type="text" name="wncu-calculationfield" id="wncu-calculationfield" >
+				<input type="number" name="wncu-calculationfield" id="wncu-calculationfield" >
 			</div>
 			<div class="col-md-1">
 				<a href="#" class="wncu-calculationfield gform_button button">محاسبه</a>

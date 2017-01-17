@@ -20,22 +20,28 @@ class Wncu_Ajax {
 				
 	}
 	public function test() {
-		// get condition s
-		$condition = !empty( get_option( 'wncucalc_from' ) ) ? get_option( 'wncucalc_from' ) :'';
+		$condition         = get_option( 'wncucalc_from' );
 
 		// filter condtions
 		$condition['karmozd'] = array_values( array_diff( $condition['karmozd']  , array( '' ) ) );
+		$karmozd = $condition['karmozd'];
 
 		// get expersion value
-		foreach( $condition['karmozd'] as $key => $value) if( ! ($key&1) ) unset($condition['karmozd'][$key]);
-		// $splited_exp =  array_values ( $condition['karmozd'] );
+		foreach( $condition['karmozd'] as $key => $value ) if( $key&1 ) unset( $condition['karmozd'][$key] );
+		$splited_exp =  array_values ( $condition['karmozd'] );
+
+		// get karmozd value
+		foreach( $karmozd as $key0 => $value0 ) if( !($key0&1) ) unset( $karmozd[$key0] );
+		$splited_karmozd = array_values( $karmozd );
 
 		// sorting values from lower to up
-		// $sorted_exp = sort( $splited_exp );
+		sort( $splited_exp );
+		rsort( $splited_karmozd );
+
 
 		?>
 		<pre>
-		<?php var_dump(get_option( 'wncu_ajax' ) );  ?>
+		<?php var_dump($splited_exp); var_dump($splited_karmozd);  ?>
 		</pre>
 		<?php
 	}
@@ -52,6 +58,11 @@ class Wncu_Ajax {
 		$type = trim( $_REQUEST['type'] );
 
 		$amont= trim( $_REQUEST['amont'] );
+
+		if ( $amont == '' || !isset( $amont ) ) {
+			echo 'لطفا مبلغ را وارد نمایید';
+			exit();
+		}
 
 		// if ( !isset( $_REQUEST['amont'] ) ) die('amount not set.');
 		$wncu_warning      = wncu_get_option( 'wncu_warning', 'general_tab' );
@@ -72,6 +83,7 @@ class Wncu_Ajax {
 
 		// sorting values from lower to up
 		sort( $splited_exp );
+		rsort( $$splited_karmozd );
 
 		// get rate of from 
 		$resfrom = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $from ) );
@@ -110,7 +122,7 @@ class Wncu_Ajax {
 			$count = count( $splited_exp );
 			for ( $i=0; $i < $count ; $i++ ) { 
 				if ( $splited_exp[$i] > $a_calc ) {
-					$result =  number_format ( ( $amont / $resultc ) + ( $splited_karmozd[$i] ) );
+					$result =  number_format ( ( $amont / $resultc ) - ( $splited_karmozd[$i] ) );
 					echo  $to . ' ' .  $result ;
 					break;				
 				}
@@ -118,12 +130,12 @@ class Wncu_Ajax {
 		}
 
 		// calculate currency for cad
-		if ( $to == 'CAD' && $type == 'شخصی' ) {
+		if ( $to == 'CAD' && ( $type == 'شخصی' || $type == 'شرکتی'  ) ) {
 			if ( $a_calc > '100000' ) {
 				echo 'حواله شخصی بالاتر از 100 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد.';
 				exit();
 			} else {
-				$result =  number_format ( ( $amont / $resultc ) + 30 );
+				$result =  number_format ( ( $amont / $resultc ) - 30 );
 				echo $to . ' ' . $result ;
 				exit();
 			}
@@ -131,7 +143,7 @@ class Wncu_Ajax {
 
 		// sherkati 
 		if ( $type == 'شرکتی' && $to !== 'RIAL' ) {
-			$result = number_format ( ( $amont / $resultc )  );
+			$result = number_format ( ( $amont / $resultc ) - 50 );
 			echo $to . ' ' .  $result ;
 			exit();
 		}
