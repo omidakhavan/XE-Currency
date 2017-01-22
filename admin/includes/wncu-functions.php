@@ -28,7 +28,7 @@ function wncu_calculation_form() {
 
 	global $wpdb;
 	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wncu", ARRAY_A  );
-	$from = !empty( get_option( 'wncucalc_from' ) ) ? get_option( 'wncucalc_from' ) :'';
+	$from =  get_option( 'wncucalc_from' );
 	?>
 <!-- 	<script>
 	(function( $ ) {
@@ -167,6 +167,16 @@ function wncu_calculation_form() {
         <?php
 }
 
+
+/**
+ * Get data from account page
+ */
+add_action( 'wp_ajax_wncucalc', 'wncu_save_calc' );
+function wncu_save_calc() {
+	// Save final options
+	update_option( 'wncucalc_from', $_REQUEST );
+}
+
 /**
  * 	Update button
  */
@@ -181,17 +191,6 @@ function wncu_general_form() {
 }
 
 
-/**
- * Get data from calculation page
- */
-add_action( 'wp_ajax_wncucalc', 'wncu_save_calc' );
-function wncu_save_calc() {
-	// Check
-	check_ajax_referer( 'ajax_wncucalc_nounce', 'security', false );
-
-    // Save final options
-    update_option( 'wncucalc_from', $_REQUEST );
-}
 	
 /**
  * Inline ajax for saving window
@@ -210,6 +209,7 @@ function ajax_activate_js() {
 						
 			jQuery("#calculation .button").on('click', function()
 			{
+
 				// Add loading Class to the button	
 				var from = jQuery("#wncufromfield li").map(function() { return jQuery(this).text() }).get();
 
@@ -232,6 +232,51 @@ function ajax_activate_js() {
 			        {
 			            // Remove the loading Class to the button
 			            setTimeout(function(){
+			            }, 1000);
+			            location.reload( true );
+			        },
+			        error: function(jqXHR, textStatus, errorThrown)
+			        {
+			            // Remove the loading Class to the button
+			            setTimeout(function(){
+			            }, 1000);
+			        }
+			    });
+			});
+		});	
+	</script>
+<?php
+}
+
+
+/**
+ * Inline ajax for saving calculate pages
+ */
+add_action( 'in_admin_footer', 'ajax_wncu_account' );
+function ajax_wncu_account() {
+	$ajaxurl = admin_url( 'admin-ajax.php' );
+	?>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+						
+			jQuery(".wncu_save_option").on('click', function(e)
+			{
+			e.preventDefault();
+
+		// Add loading Class to the button	
+				var page = jQuery("#wncu_select_page").val();
+			    jQuery.ajax(
+			    {
+			        type: "POST",
+			        url: "<?php echo $ajaxurl; ?>",
+			        data: {
+			        	action : 'wncu_account',
+			        	page : page
+			        	 },
+			        success: function(data)
+			        {
+			            // Remove the loading Class to the button
+			            setTimeout(function(){
 
 			            }, 1000);
 			            location.reload( true );
@@ -247,4 +292,51 @@ function ajax_activate_js() {
 		});	
 	</script>
 <?php
+}
+
+/**
+ * Add custom code to setting page account
+ */
+add_action( 'wsa_form_bottom_accounts', 'wncu_account_form' );
+function wncu_account_form() {
+
+	$list = new Wp_Query( array( 'post_type' => 'page' ) );
+	$selected = get_option( 'wncu_account');
+
+	if ( $list->have_posts() ) {
+		echo '<select id="wncu_select_page">';
+		while ( $list->have_posts() ) {
+			$list->the_post();
+			if ($selected['page'] == get_the_title()) {
+				echo '<option value="' . get_the_id() . '" selected>' . get_the_title() . '</option>';
+			}else{
+				echo '<option value="' . get_the_id() . '" >' . get_the_title() . '</option>';
+			}
+		}
+		echo '</select>';
+	}
+
+	echo '<div><a style="margin-top: 50px;" href="#" class="wncu_save_option button button-primary" />ذخیره ی تغیرات</a></div>';
+}
+
+
+/**
+ * Get data from calculation page
+ */
+add_action( 'wp_ajax_wncu_account', 'wncu_save_wncu_account' );
+function wncu_save_wncu_account() {
+	// Save final options
+	update_option( 'wncu_account', $_REQUEST );
+}
+
+//add_action( 'wp_head', 'wncu_account_restriction' );
+function wncu_account_restriction() {
+
+	$selected = get_option( 'wncu_account');
+	if ( !is_user_logged_in() ) {
+		if ( get_the_ID() == $selected['page'] ) {
+			wp_redirect( wp_login_url() );
+		}
+	}
+
 }

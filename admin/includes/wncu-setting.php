@@ -36,6 +36,10 @@ class Wncu_Settings {
             array(
                 'id' => 'calculation',
                 'title' => __( 'فرم محاسبه', 'wncu' )
+            ),
+            array(
+                'id' => 'accounts',
+                'title' => __( 'حساب ها', 'wncu' )
             )
         );
         return $sections;
@@ -549,7 +553,7 @@ class Wncu_Settings {
                 //     'default'           => __( '7', 'wncu' ),
                 //     'type'              => 'number'
                 // )
-            ),   
+            ),             
         );
         return $settings_fields;
     }
