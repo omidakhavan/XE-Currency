@@ -83,7 +83,7 @@ class Wncu_Ajax {
 
 		// sorting values from lower to up
 		sort( $splited_exp );
-		rsort( $$splited_karmozd );
+		rsort( $splited_karmozd );
 
 		// get rate of from 
 		$resfrom = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $from ) );
@@ -135,7 +135,7 @@ class Wncu_Ajax {
 				echo 'حواله شخصی بالاتر از 100 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد.';
 				exit();
 			} else {
-				$result =  number_format ( ( $amont / $resultc ) - 30 );
+				$result =  number_format ( ( $amont / $resultc ) + 30 );
 				echo $to . ' ' . $result ;
 				exit();
 			}
@@ -150,17 +150,17 @@ class Wncu_Ajax {
 
 		// any currency to rial 
 		if ( $to == 'RIAL' ) {
-			$result =  number_format ( ( $amont + 30 ) * $resultc );
-			echo $result  . ' تومان'  ;
-			exit();
+			$count = count( $splited_exp );
+			for ( $i=0; $i < $count ; $i++ ) { 
+				if ( $splited_exp[$i] > $a_calc ) {
+					$result =  number_format ( ( $amont * $resultc ) - ( $splited_karmozd[$i] . '000' ) );
+					echo $result  . ' تومان'  ;
+					break;				
+				}
+			}
 		}
 
 		exit();
-	}
-
-	public function ceil_dec( $in,$prec ) {
-		$fact = pow(10,$prec);
-		return ceil($fact*$in)/$fact;
 	}
 
 }

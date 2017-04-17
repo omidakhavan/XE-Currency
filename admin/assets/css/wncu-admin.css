@@ -84,3 +84,24 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.address_book_container label {
+    display: inline-block;
+    width: 20%;
+}
+.address_book_container div {
+    margin-top: 20px;
+    
+}
+
+.wnsu-uploaded-img{
+    width: 180px;
+    height: 180px;
+}
+
+.wnsu-uploaded-span{
+    display: block; 
+    margin-bottom: 10px;
+}
+
+

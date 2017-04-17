@@ -5,18 +5,184 @@
 .wncu-curr-t { padding-right:10px; float:right; margin: 0 10px; float: right; width: calc(50% - 20px);}
 .wncu-curr-t .wncu-curr-h th, .wncu-curr-t tr td { padding: 10px 20px 10px 0; text-align: right;}
 .wncu-warning-msg {display: block; text-align: center; margin-bottom: 20px; font-weight: 300; font-size: 16px; }
-@media only screen and (max-width: 960px) {
-	.wncu-curr-t { width:100%; float:none; margin-top:20px;}
-}
+@media only screen and (max-width: 960px) {.wncu-curr-t { width:100%; float:none; margin-top:20px;} }
 
-/**	
-Calculator ***/
+/***Calculator ***/
 .wncu-calculator-container > select,.wncu-calculator-container > input[type="text"]  {display: inline-block; margin-left:10px;}
 .wncu-calculator-container > label{display: inline-block;position: absolute;top: -30px;font-size: 14px;}
 .wncu-calculator-container > input[type="text"] {min-width: 200px;width: 100%;}
 .wncu-calculationfield {margin-top: 20px; }
 .wncu-calculationresult {display: block; text-align: center; }
-@media (min-width: 468px){
-    .wncu-calculator-container .col-md-2,.wncu-calculator-container .col-md-3,.wncu-calculator-container .col-md-1{float:right;}
+@media (min-width: 468px){.wncu-calculator-container .col-md-2,.wncu-calculator-container .col-md-3,.wncu-calculator-container .col-md-1{float:right;} } input#wncu-calculationfield {border: 1px solid #e1e1e1; padding: 6px 4px; outline: none; -moz-border-radius: 1px; -webkit-border-radius: 1px; border-radius: 1px; color: #888; margin: 0; min-width: 60px; width: 99%; max-width: 100%; min-height: 36px; display: block; margin-bottom: 20px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+/*** address book ***/
+.wnsu-front-thumbnail{width: 180px; height: auto; }
+.wnsu_form_addressbook div input {width: 400px;}
+.wnsu_form_addressbook div label {font-size: 13px; font-weight: 300; padding-bottom: 5px; }
+.wnsu_form_addressbook div {margin-top: 30px; }
+.wnsu-list-address{text-align:center;width: 200px;display: inline;}
+.wnsu-list-address .wnsu-all-addresses{background-color: rgba(0, 153, 255, 0.72);color: #fff;font-size: 12px;font-weight: 300;padding: 30px;margin: 10px;text-align: center;transition: all 0.24s ease;display: inline-block;}
+.wnsu-list-address .wnsu-all-addresses h3{font-size:16px; color:#f2f2f2;}
+.wnsu-list-address .wnsu-all-addresses:hover{background-color:#9C27B0; color: #FF5722;}
+.wnsu-remove-addr {color: #f2f2f2; cursor: pointer; }
+.wnsu-not-found {text-align: center; display: block; }
+
+/*** register ***/
+.wncu-all-steps {text-align: center; }
+.wncu-all-steps article {display: inline-block;position: relative;margin: 10px;padding: 40px;background: aqua;color: #000;-webkit-transition: all 0.4s ease-out;transition: all 0.4s ease-out;border-radius: 25px;}
+.wncu-steps-one:after, .wncu-steps-tow:after {content:'';height:20px;width:20px;background-color: aqua;position: absolute;bottom: 40%;left: -4%;-webkit-transform: rotate(7.5deg);-ms-transform: scale(0.8);transform: rotate(45.5deg);}
+
+/*** step tow ***/
+.cc-selector input{margin:0;padding:0; -webkit-appearance:none; -moz-appearance:none; appearance:none; }
+.cc-selector input:active +.drinkcard-cc{opacity: .9;}
+.cc-selector input:checked +.drinkcard-cc{-webkit-filter: none; -moz-filter: none; filter: none; }
+.drinkcard-cc{cursor:pointer; background-size:contain; background-repeat:no-repeat; display:inline-block; width:100px;height:70px; -webkit-transition: all 100ms ease-in; -moz-transition: all 100ms ease-in; transition: all 100ms ease-in; -webkit-filter: brightness(1.8) grayscale(1) opacity(.7); -moz-filter: brightness(1.8) grayscale(1) opacity(.7); filter: brightness(1.8) grayscale(1) opacity(.7); }
+.drinkcard-cc:hover{-webkit-filter: brightness(1.2) grayscale(.5) opacity(.9); -moz-filter: brightness(1.2) grayscale(.5) opacity(.9); filter: brightness(1.2) grayscale(.5) opacity(.9); }
+.register_havale_container .cc-selector {display: inline-block; text-align: center; border: 1px solid #b9b3b3; padding: 30px; overflow: hidden; margin: 20px; }
+.register_havale_container .cc-selector label h3{back;font-size: 20px;}
+.register_havale_container {text-align: center;}
+.wnsu-next-container {text-align: center; }
+
+
+/*** preloader ***/
+#preloader6{
+    position:relative;
+    width: 42px;
+    height: 42px;
+    animation: preloader_6 5s infinite linear;
+    z-index: 9999999999;
+    position: fixed;
+    top: 50%;
+    left: 48%;
 }
-input#wncu-calculationfield {border: 1px solid #e1e1e1; padding: 6px 4px; outline: none; -moz-border-radius: 1px; -webkit-border-radius: 1px; border-radius: 1px; color: #888; margin: 0; min-width: 60px; width: 99%; max-width: 100%; min-height: 36px; display: block; margin-bottom: 20px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+#preloader6 span{
+    width:20px;
+    height:20px;
+    position:absolute;
+    background:red;
+    display:block;
+    animation: preloader_6_span 1s infinite linear;
+}
+#preloader6 span:nth-child(1){
+background:#2ecc71;
+ 
+}
+#preloader6 span:nth-child(2){
+left:22px;
+background:#9b59b6;
+    animation-delay: .2s;
+ 
+}
+#preloader6 span:nth-child(3){
+top:22px;
+background:#3498db;
+    animation-delay: .4s;
+}
+#preloader6 span:nth-child(4){
+top:22px;
+left:22px;
+background:#f1c40f;
+    animation-delay: .6s;
+}
+@keyframes preloader_6_span {
+   0% { transform:scale(1); }
+   50% { transform:scale(0.5); }
+   100% { transform:scale(1); }
+}
+.wnsu-index{
+	z-index: 999999;
+	opacity: 0.3;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: black;
+}
+
+.wnsu-response{
+	display: block;
+	text-align: center;
+}
+
+.wnsu-hide{
+	display: none;
+}
+
+/*** step three ***/
+.register_havale_container .wncu-calculator-container {
+    margin: 50px auto 40px auto;
+}
+
+.wnsu-pish-alarm {
+    text-align: right;
+    background: beige;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 30px auto 20px;
+}
+
+.wnsu-pish-alarm h3 {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.wnsu-pish-head h3 {
+    background: darkgrey;
+    padding: 10px;
+    font-size: 24px;
+    color: #313030;
+}
+
+.wnsu-pish-head-g {
+    display: inline-block;
+    text-align: right;
+    width: 49%;
+}
+
+
+.wnsu-pish-table {
+    border: none;
+    margin: 15px auto;
+}
+.wnsu-pish-table thead tr th {text-align: right;border: none;background: aqua;}
+.wnsu-pish-table tbody tr td {text-align: right;border: none;background: #efefef;color: #000;}
+
+.wnsu-pish-benf > div {
+    padding-bottom: 5px;
+    display: block;
+    text-align: left;
+    direction: ltr;
+    background-color: #f2f2f2;
+    padding-left: 10px;
+}
+.wnsu-pish-benf div > label{display:inline-block;color: #000;width: 210px;}
+.wnsu-pish-benf div > span {display:inline-block;color: #313030;font-weight: 300;font-size: 13px;}
+.wnsu-pish-benf div:nth-child(1){padding-top:20px}
+.wnsu-pish-benf div:last-child{padding-bottom:20px}
+
+.wnsu-finish-msg {
+    background: beige;
+    display: inline-block;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+
+
+.wnsu-code-ozv label {
+    display: inline-block;
+    font-size: 20px;
+}
+
+
+.wnsu-code-ozv {
+    margin-top: 20px !important;
+}
+
+.wnsu-code-ozv span {
+    margin-right: 20px;
+    font-size: 16px;
+    color: #000;
+}

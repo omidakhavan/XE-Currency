@@ -31,10 +31,12 @@ class Wncu_Activator {
 				UNIQUE KEY  namad (namad)
 			) $charset_collate;";
 			update_option( 'wncu_activate', 'yes' );
+
+			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			dbDelta( $sql );
+			
 		}
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		dbDelta( $sql );
 	}
 
 }

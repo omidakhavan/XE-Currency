@@ -64,6 +64,6 @@
 					if ( $this.val() != 'RIAL') {  el.push( $this.detach() ); }
 				});
 			}
-		});		
+		});
 	});
 })( jQuery );	
