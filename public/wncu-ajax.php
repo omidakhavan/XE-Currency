@@ -64,7 +64,6 @@ class Wncu_Ajax {
 			exit();
 		}
 
-		// if ( !isset( $_REQUEST['amont'] ) ) die('amount not set.');
 		$wncu_warning      = wncu_get_option( 'wncu_warning', 'general_tab' );
 		$defult_karmozd    = wncu_get_option( 'wncu_karmozd', 'calculation' );
 		$condition         = get_option( 'wncucalc_from' );
@@ -91,9 +90,20 @@ class Wncu_Ajax {
 		// gate rate of to
 		$resto = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = %s" , $to ) );
 
+		// get usd
+		$resusd = $wpdb->get_col( $wpdb->prepare( "SELECT nerkh FROM {$wpdb->prefix}wncu WHERE namad = 'USD'" ) );
+
 		// if warning set to on skip and die
 		if ( $wncu_warning == 'on' ) { 
 			echo 'ارایه قیمت مقدور نمی باشد لطفا تماس بگیرید.'; 
+			exit(); 
+		}
+
+		// if warning set to on skip and die
+		if ( $amont <= wncu_get_option( 'wncu_kaf_havale', 'general_tab' ) || $from == 'RIAL' && $amont <= wncu_get_option( 'wncu_kaf_havale_rial', 'general_tab' ) ) {
+				if ( $from != 'RIAL' ) echo 'مقدار حواله قابل ارسال نمیتواند پایینتر از ' . wncu_get_option( 'wncu_kaf_havale', 'general_tab' ) . ' برای ارزهای خارجی باشد'; 
+				else 
+					echo 'مقدار حواله قابل ارسال نمیتواند پایینتر از ' . wncu_get_option( 'wncu_kaf_havale_rial', 'general_tab' ) . ' تومان باشد'; 
 			exit(); 
 		} 
 
@@ -108,11 +118,21 @@ class Wncu_Ajax {
 		if ( $resultc == 0 ) {
 		  	echo 'ارز مورد نظر قابل ارایه نمی باشد.';
 			exit();
-		}  
+		}
 
-		$a_calc = isset( $condition['karmozd'] ) ? ceil ( ( $amont / $resultc ) - min($splited_karmozd) ) : ceil ( ( $amont / $resultc ) - $defult_karmozd );
+		// get limitation check
+		if ( $to == 'USD' ) {
+			$a_calc = isset( $condition['karmozd'] ) ? ceil ( ( $amont / $resultc ) - min($splited_karmozd) ) : ceil ( ( $amont / $resultc ) - $defult_karmozd );
+		}elseif ( $to == 'RIAL' ) {
+			$a_calc = $amont;
+		}else{
+			$a_calc = isset( $condition['karmozd'] ) ? ceil ( ( $amont / $resusd ) - min($splited_karmozd) ) : ceil ( ( $amont / $resusd ) - $defult_karmozd );
+
+			// $a_calc = isset( $condition['karmozd'] ) ? ceil ( ( $amont / $resultc ) - min($splited_karmozd) ) : ceil ( ( $amont / $resultc ) - $defult_karmozd );
+
+		}
 		// calculation amount for id upper than $10000 exit
-		if ( $from != 'CAD' && $to != 'CAD' && $type == 'شخصی' && $a_calc > '10000' ) { 
+		if ( $from != 'CAD' && $to != 'CAD' && $type == 'شخصی' && $a_calc >= '10000' ) { 
 			echo 'حواله شخصی بالاتر از 10 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد. (بجز دلار کانادا).';
 			exit();
 		}
@@ -131,7 +151,7 @@ class Wncu_Ajax {
 
 		// calculate currency for cad
 		if ( $to == 'CAD' && ( $type == 'شخصی' || $type == 'شرکتی'  ) ) {
-			if ( $a_calc > '100000' ) {
+			if ( $a_calc >= '100000' ) {
 				echo 'حواله شخصی بالاتر از 100 هزار واحد به علت رعایت  قوانین مبارزه با پولشویی امکان پذیر نمیباشد.';
 				exit();
 			} else {
@@ -149,7 +169,7 @@ class Wncu_Ajax {
 		}
 
 		// any currency to rial 
-		if ( $to == 'RIAL' ) {
+		if ( $to == 'RIAL' && $type == 'شخصی' ) {
 			$count = count( $splited_exp );
 			for ( $i=0; $i < $count ; $i++ ) { 
 				if ( $splited_exp[$i] > $a_calc ) {
@@ -161,6 +181,10 @@ class Wncu_Ajax {
 		}
 
 		exit();
+	}
+
+	protected function compare( $resultc, $a_calc ){
+
 	}
 
 }
