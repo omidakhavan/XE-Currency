@@ -21,16 +21,16 @@ class Wncu_Main_Excute {
 		// Add new corn job time
 		add_filter( 'cron_schedules',      array ( $this, 'wncu_my_cron_schedules' ) );
 		add_action( 'admin_init',          array ( $this, 'wncu_define_cornhourly' ) );
-		// add_action( 'init',                array ( $this, 'get_havale_usd' ) );
+		add_action( 'init',                array ( $this, 'get_havale_usd' ) );
 		add_action( 'wp_ajax_wncuupdate',  array ( $this, 'wncu_update_now'        ) );
 
 		add_action( 'wncu_corns_five',     array ( $this, 'wncu_corns_five'        ) );
-		add_action( 'wncu_corns_ten',      array ( $this, 'wncu_corns_ten'         ) );
-		add_action( 'wncu_corns_fifteen',  array ( $this, 'wncu_corns_fifteen'     ) );
+		// add_action( 'wncu_corns_ten',      array ( $this, 'wncu_corns_ten'         ) );
+		// add_action( 'wncu_corns_fifteen',  array ( $this, 'wncu_corns_fifteen'     ) );
 		add_action( 'wncu_corns_thrtee',   array ( $this, 'wncu_corns_thrtee'      ) );
 		add_action( 'wncu_corns_hourly',   array ( $this, 'wncu_do_this_hourly'    ) );
 
-		// add_action('wp_head', array ( $this, 'test') );
+		add_action('wp_head', array ( $this, 'test') );
 
 	}
 
@@ -49,7 +49,8 @@ class Wncu_Main_Excute {
 	}
 
 	public function get_havale_usd() {
-		$estekhraj  = wncu_get_option( 'wncu_fetchhavale', 'general_tab' );
+			$estekhraj  = wncu_get_option( 'wncu_fetchhavale', 'general_tab' );
+			$havale_usd_opt = wncu_get_option( 'wncu_usd_havale', 'general_tab' );
 
 		if ( $estekhraj == 'on' ) {
 
@@ -62,17 +63,19 @@ class Wncu_Main_Excute {
 			$context = stream_context_create($opts);
 			$getfile = @file_get_contents('http://www.sarafiparsi.com/wp-content/plugins/t-rate/trate.html',NULL,$context,100,300);
 			$converttoarray = explode(' ',trim( $getfile ) );
-			$numi = trim( intval(preg_replace('/[^0-9]+/', '', $converttoarray[74]), 10) );
+			$numi = trim( intval(preg_replace('/[^0-9]+/', '', @$converttoarray[74]), 10) );
 
-			if ( $numi != '0' && !empty( $numi ) && isset( $numi ) &&  NULL != $numi  ) {
+			if ( $numi !== 0 && !empty( $numi ) && isset( $numi ) &&  NULL != $numi  && $numi ) {
 				$this->set_havale( $numi );		
+			}else{
+				$this->set_havale( $havale_usd_opt );
 			}
 		}
 
 		if ( $estekhraj != 'on' ) {
-			$havale_usd_opt = wncu_get_option( 'wncu_usd_havale', 'general_tab' );
 			$this->set_havale( $havale_usd_opt );
 		}
+
 	}
 
 	/**
@@ -217,16 +220,16 @@ class Wncu_Main_Excute {
 	            'interval' => 5*60,
 	            'display' => __('Once every 5 minutes'));
 	    }
-	    if(!isset($schedules["10min"])){
-	        $schedules["10min"] = array(
-	            'interval' => 10*60,
-	            'display' => __('Once every 10 minutes'));
-	    }	    
-	    if(!isset($schedules["15min"])){
-	        $schedules["15min"] = array(
-	            'interval' => 15*60,
-	            'display' => __('Once every 15 minutes'));
-	    }	    
+	    // if(!isset($schedules["10min"])){
+	    //     $schedules["10min"] = array(
+	    //         'interval' => 10*60,
+	    //         'display' => __('Once every 10 minutes'));
+	    // }	    
+	    // if(!isset($schedules["15min"])){
+	    //     $schedules["15min"] = array(
+	    //         'interval' => 15*60,
+	    //         'display' => __('Once every 15 minutes'));
+	    // }	    
 	    if(!isset($schedules["30min"])){
 	        $schedules["30min"] = array(
 	            'interval' => 30*60,
@@ -245,12 +248,12 @@ class Wncu_Main_Excute {
 	    if ( ! wp_next_scheduled ( 'wncu_corns_five' ) ) {
 			wp_schedule_event( time(), '5min', 'wncu_corns_five');
 	    }
-	    if ( ! wp_next_scheduled ( 'wncu_corns_ten' ) ) {
-			wp_schedule_event( time(), '10min', 'wncu_corns_ten');
-	    }
-	    if ( ! wp_next_scheduled ( 'wncu_corns_fifteen' ) ) {
-			wp_schedule_event( time(), '15min', 'wncu_corns_fifteen');
-	    }
+	  //   if ( ! wp_next_scheduled ( 'wncu_corns_ten' ) ) {
+			// wp_schedule_event( time(), '10min', 'wncu_corns_ten');
+	  //   }
+	  //   if ( ! wp_next_scheduled ( 'wncu_corns_fifteen' ) ) {
+			// wp_schedule_event( time(), '15min', 'wncu_corns_fifteen');
+	  //   }
 	    if ( ! wp_next_scheduled ( 'wncu_corns_thrtee' ) ) {
 			wp_schedule_event( time(), '30min', 'wncu_corns_thrtee');
 	    }
@@ -1141,18 +1144,19 @@ class Wncu_Main_Excute {
 		// var_dump($results);
 	}
 	public function test(){
-			$curr_cad   = wncu_get_option( 'wncu_cad', 'currencies' );
-			$havale_cad = wncu_get_option( 'wncu_cad_havale', 'currencies' );
-			$sood_cad   = wncu_get_option( 'wncu_cad_sood', 'currencies' );
-			$crate_cad  = $this->wb_currency( $curr_cad );
-			$result_cad = ceil( ($crate_cad * $havale_cad ) * ( $sood_cad / 100 ) ) ;
-			$this->wncu_crud( $curr_cad , 'دلار کانادا', $result_cad );	
-		$ragham = ceil ( $crate_cad * $havale_cad );
-		$darsad = ceil( ($sood_cad / 100) * $ragham );
+			$havale_usd = $this->get_havale();
+			$curr_zar   = wncu_get_option( 'wncu_zar', 'currencies' );
+			$sood_zar   = wncu_get_option( 'wncu_zar_sood', 'currencies' );
+			$crate_zar  = $this->wb_currency( $curr_zar );
+			$ragham_zar = ceil( $crate_zar * $havale_usd );
+			$darsad_zar = ceil( ( $sood_zar / 100 ) * $ragham_zar);
+			$result_zar = $ragham_zar + $darsad_zar;
+			// $this->wncu_crud( $curr_zar , 'راند', $result_zar );
+		// echo $ragham_zar;
 		
 		?>
 		<pre>
-		<?php	print_r($ragham + $darsad); ?>
+		<?php var_dump('expression');	print_r($ragham + $darsad); ?>
 		</pre>
 		<?php
 	}
