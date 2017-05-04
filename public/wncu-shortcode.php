@@ -17,7 +17,7 @@ class Wncu_Shortcodes {
 		add_shortcode('wncu-calc', array( $this, 'wncu_calc_shortcode' ) );
 
 		add_action( 'vc_before_init', array( $this, 'wncu_vc_shortcode' ) );
-		add_action( 'vc_before_init', array( $this, 'wncu_cal_vc_shortcode' ) );
+		add_action( 'vc_before_init', array( $this, 'wncu_cal_vc_shortcode' ) );				
 				
 	}
 
@@ -52,13 +52,12 @@ class Wncu_Shortcodes {
 					<th>نرخ (تومان)</th>
 				</tr>';
 			if ( $wncu_warning != 'on' ) {
-
 				foreach ( $results as $key => $value ) {
 					$count++;
 					$out .= '<tr>';
 					$out .=	'<td class="wncu-curr-abbv"> '.$value['namad'].'</td>';
 					$out .=	'<td class="wncu-curr-curr"> '.$value['arz'].'</td>';
-					$out .=	'<td class="wncu-curr-rate"> '.$value['nerkh'].'</td>';
+					$out .=	'<td class="wncu-curr-rate"> '. $this->numberfarsi( $value['nerkh'] ) .'</td>';
 					$out .= '</tr>';
 
 					if ( $count > $tableone ) {
@@ -97,7 +96,7 @@ class Wncu_Shortcodes {
 					$out .= '<tr>';
 					$out .=	'<td class="wncu-curr-abbv"> '.$value2['namad'].'</td>';
 					$out .=	'<td class="wncu-curr-curr"> '.$value2['arz'].'</td>';
-					$out .=	'<td class="wncu-curr-rate"> '.$value2['nerkh'].'</td>';
+					$out .=	'<td class="wncu-curr-rate"> '.  $this->numberfarsi( $value2['nerkh'] ).'</td>';
 					$out .= '</tr>';
 
 				}	
@@ -286,5 +285,61 @@ class Wncu_Shortcodes {
 
 		}
 	}
+
+	public function numberfarsi( $string ) {
+
+		$result = '';
+
+		for( $i = 0 ; $i < strlen($string) ; $i++ ){
+
+			switch( $string[$i] ){
+
+				case 0:
+				$result .= '٠';
+				break;
+
+				case 1:
+				$result .= '١';
+				break;
+
+				case 2:
+				$result .= '٢';
+				break;
+
+				case 3:
+				$result .= '٣';
+				break;
+
+				case 4:
+				$result .= '٤';
+				break;
+
+				case 5:
+				$result .= '٥';
+				break;
+
+				case 6:
+				$result .= '٦';
+				break;
+
+				case 7:
+				$result .= '٧';
+				break;
+
+				case 8:
+				$result .= '٨';
+				break;
+
+				case 9:
+				$result .= '٩';
+				break;
+			}
+
+		}
+
+		return $result;
+		unset($result);
+
+	} 
 
 }

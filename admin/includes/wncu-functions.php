@@ -30,26 +30,6 @@ function wncu_calculation_form() {
 	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wncu", ARRAY_A  );
 	$from =  get_option( 'wncucalc_from' );
 	?>
-<!-- 	<script>
-	(function( $ ) {
-	'use strict';
-
-		jQuery(document).ready(function($) {
-		    jQuery('#mec_add_ticket_button').on('click', function()
-		    {
-		    	console.log('h');
-		        var key = jQuery('#mec_new_ticket_key').val();
-		        var html = jQuery('#mec_new_ticket_raw').html().replace(/:i:/g, key);
-		        
-		        jQuery('#mec_tickets').append(html);
-		        jQuery('#mec_new_ticket_key').val(parseInt(key)+1);
-		    });
-		});
-		    function mec_ticket_remove(i) {
-			    jQuery("#mec_ticket_row"+i).remove();
-			}
-
-	</script> -->
 	<!-- From -->
 		<div class="wncu-calccontainer">
 			<a href="#" class="wncuaddfrombtn">"از"</a>
@@ -87,20 +67,6 @@ function wncu_calculation_form() {
 			</div>
 		</div>		
 
-<!-- 		<div class="wncu-calccontainer">
-			<a href="#" class="wncutypebtn">"کارمزد"</a>
-			<input class="wncu-type-havale" name="wncu-type-havale" type="text">
-			<div class="wncu-ul-container">
-				<ul class="wncutypefield" name="wncutypefield" id="wncutypefield">
-					<?php// if ( isset( $from['type'] ) ):  
-					//foreach ( $from['type'] as $key0 => $value0 ) : ?>
-						<!-- <span class="wncuremove"> <li value="<?php echo $value0; ?>" ><?php echo $value0; ?></li> X</span> -->
-					<?php //endforeach; endif; ?>	
-<!-- 				</ul>
-			</div>
-		</div>
-  -->
-		
 
 		<div class="wncu-repeat">
 	    <table class="wncu-wrapper" width="100%">

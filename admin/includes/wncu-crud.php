@@ -30,7 +30,7 @@ class Wncu_Main_Excute {
 		add_action( 'wncu_corns_thrtee',   array ( $this, 'wncu_corns_thrtee'      ) );
 		add_action( 'wncu_corns_hourly',   array ( $this, 'wncu_do_this_hourly'    ) );
 
-		add_action('wp_head', array ( $this, 'test') );
+		// add_action('init', array ( $this, 'ssssssssss') );
 
 	}
 
@@ -51,25 +51,24 @@ class Wncu_Main_Excute {
 	public function get_havale_usd() {
 			$estekhraj  = wncu_get_option( 'wncu_fetchhavale', 'general_tab' );
 			$havale_usd_opt = wncu_get_option( 'wncu_usd_havale', 'general_tab' );
+			$latest_havale = wncu_get_option( 'wncu_lastest_havale_parsi', 'general_tab' );
 
 		if ( $estekhraj == 'on' ) {
 
-			$opts = array(
-				'http'=>array(
-					'method'=>"POST",
-					'header'=>"Mozilla/5.0"
-				)
-			);
-			$context = stream_context_create($opts);
-			$getfile = @file_get_contents('http://www.sarafiparsi.com/wp-content/plugins/t-rate/trate.html',NULL,$context,100,300);
-			$converttoarray = explode(' ',trim( $getfile ) );
-			$numi = trim( intval(preg_replace('/[^0-9]+/', '', @$converttoarray[74]), 10) );
+			$numi = $this->curl();
+			$numi = $numi[3];
+			if ( $numi !== 0 && !empty( $numi ) && isset( $numi ) &&  NULL != $numi  && $numi  ) {
 
-			if ( $numi !== 0 && !empty( $numi ) && isset( $numi ) &&  NULL != $numi  && $numi ) {
-				$this->set_havale( $numi );		
+				$this->set_havale( $numi );
+				update_option( 'set_latest_havale', $numi );
 			}else{
-				$this->set_havale( $havale_usd_opt );
+				if ( $latest_havale == 'on' ) {
+					$havale_usd_opt = get_option( 'set_latest_havale' );
+				}
+					$this->set_havale( $havale_usd_opt );
+
 			}
+
 		}
 
 		if ( $estekhraj != 'on' ) {
@@ -1106,15 +1105,53 @@ class Wncu_Main_Excute {
 	 * found value
 	 */
 	public function wncu_found_value($key, array $arr){
-        if ( !isset( $arr ) || empty( $arr ) || is_null( $arr ) ) {
-          return;
-        }
-        $val = array();
-        array_walk_recursive($arr, function($v, $k) use($key, &$val){
-            if($k == $key) array_push($val, $v);
-        });
-        return count($val) > 1 ? $val : array_pop($val);
-    }
+		if ( !isset( $arr ) || empty( $arr ) || is_null( $arr ) ) {
+			return;
+		}
+		$val = array();
+		array_walk_recursive($arr, function($v, $k) use($key, &$val){
+			if($k == $key) array_push($val, $v);
+		});
+		return count($val) > 1 ? $val : array_pop($val);
+	}
+
+	/**
+	 * Curl
+	 */
+	public function curl(){
+
+		$url = 'http://www.sarafiparsi.com/wp-content/plugins/t-rate/trate.html';
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0');
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_FAILONERROR, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		$html = curl_exec($ch);
+
+		$dom = new DOMDocument();
+		$dom->validateOnParse = true;
+		@$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+		$xpath = new DOMXpath($dom);
+		$tbody = $dom->getElementsByTagName('table')->item(0);
+		$rows = $tbody->getElementsByTagName("tr");
+
+		foreach ($rows as $row) {
+
+			$cells = $row->getElementsByTagName('td');
+			foreach ($cells as $cell) {
+			    $elements[] = $cell->nodeValue;
+			}
+		}
+
+
+
+		return $elements ;
+
+	}
 
     public function wncu_crud( $abb , $curr , $rate ){
 
@@ -1143,20 +1180,12 @@ class Wncu_Main_Excute {
 
 		// var_dump($results);
 	}
-	public function test(){
-			$havale_usd = $this->get_havale();
-			$curr_zar   = wncu_get_option( 'wncu_zar', 'currencies' );
-			$sood_zar   = wncu_get_option( 'wncu_zar_sood', 'currencies' );
-			$crate_zar  = $this->wb_currency( $curr_zar );
-			$ragham_zar = ceil( $crate_zar * $havale_usd );
-			$darsad_zar = ceil( ( $sood_zar / 100 ) * $ragham_zar);
-			$result_zar = $ragham_zar + $darsad_zar;
-			// $this->wncu_crud( $curr_zar , 'راند', $result_zar );
-		// echo $ragham_zar;
+	public function ssssssssss(){
+
 		
 		?>
 		<pre>
-		<?php var_dump('expression');	print_r($ragham + $darsad); ?>
+		<?php var_dump( '$this->get_havale()' ); ?>
 		</pre>
 		<?php
 	}

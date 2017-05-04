@@ -168,6 +168,11 @@ class Wncu_Ajax {
 			$result = number_format ( ( $amont / $resultc ) - 50 );
 			echo $to . ' ' .  $result ;
 			exit();
+		} elseif( $type == 'شرکتی' && $to == 'RIAL' ) {
+			$result = number_format ( ( $amont * $resultc ) - 50000 );
+			$result = $this->numberfarsi($result);
+			echo  $result . ' ' . 'تومان';
+			exit();
 		}
 
 		// any currency to rial 
@@ -176,6 +181,7 @@ class Wncu_Ajax {
 			for ( $i=0; $i < $count ; $i++ ) { 
 				if ( $splited_exp[$i] > $a_calc ) {
 					$result =  number_format ( ( $amont * $resultc ) - ( $splited_karmozd[$i] . '000' ) );
+					$result = $this->numberfarsi($result);
 					echo $result  . ' تومان'  ;
 					break;				
 				}
@@ -185,8 +191,64 @@ class Wncu_Ajax {
 		exit();
 	}
 
-	protected function compare( $resultc, $a_calc ){
+	public function numberfarsi( $string ) {
 
-	}
+		$result = '';
+
+		for( $i = 0 ; $i < strlen($string) ; $i++ ){
+
+			switch( $string[$i] ){
+
+				case '0':
+				$result .= '٠';
+				break;
+
+				case '1':
+				$result .= '١';
+				break;
+
+				case '2':
+				$result .= '٢';
+				break;
+
+				case '3':
+				$result .= '٣';
+				break;
+
+				case '4':
+				$result .= '٤';
+				break;
+
+				case '5':
+				$result .= '٥';
+				break;
+
+				case '6':
+				$result .= '٦';
+				break;
+
+				case '7':
+				$result .= '٧';
+				break;
+
+				case '8':
+				$result .= '٨';
+				break;
+
+				case '9':
+				$result .= '٩';
+				break;
+
+				case ',':
+				$result .= ',';
+				break;
+			}
+
+		}
+
+		return $result;
+		unset($result);
+
+	} 
 
 }
