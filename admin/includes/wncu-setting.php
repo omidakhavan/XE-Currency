@@ -40,6 +40,10 @@ class Wncu_Settings {
             array(
                 'id' => 'emails',
                 'title' => __( 'پیغام ها', 'wncu' )
+            ),
+            array(
+                'id' => 'online_service',
+                'title' => __( 'پرداخت آنلاین', 'wncu' )
             )
         );
         return $sections;
@@ -646,7 +650,21 @@ class Wncu_Settings {
                 //     'default'           => __( '7', 'wncu' ),
                 //     'type'              => 'number'
                 // )
-            ),             
+            ), 
+            'online_service' => array(
+                array(
+                    'name'              => 'wncu_oservice_karmozd',
+                    'label'             => __( 'کارمزد پرداخت آنلاین', 'wncu' ),
+                    'desc'              => __( '', 'wncu' ),
+                    'type'              => 'number'
+                ),
+                array(
+                    'name'              => 'wncu_ponline_karmozd',
+                    'label'             => __( 'کارمزد نقد درآمد ارزی', 'wncu' ),
+                    'desc'              => __( '', 'wncu' ),
+                    'type'              => 'number'
+                )
+            ),            
         );
         return $settings_fields;
     }

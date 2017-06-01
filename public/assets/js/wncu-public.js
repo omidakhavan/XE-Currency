@@ -1,18 +1,19 @@
 // start ajax add product wishlist
+
 (function( $ ) {
 	'use strict';
 	$(document).ready(function($) {
 		$( '.wncu-calculationfield').on('click', function(event) {
 			event.preventDefault();
+			$(this).attr('clicked', 'yes');
 
 			$('.wncu-calculationresult').text('در حال محاسبه ...');
 			
-			console.log('ssss');
 			// get product id 
 			var from  =  $('#wncuaddfrom').val();
 			var to    =  $('#wncutofrom').val();
 			var type  =  $('#wncutype').val();
-			var amont =  $('#wncu-calculationfield').val();
+			var amont =  findAndReplace( $('#wncu-calculationfield').val(), ',' , '' );
 
 			$.ajax( {
 				type: 'POST',
@@ -29,6 +30,7 @@
 					setTimeout(function() {
 						console.log(data);
 						$('.wncu-calculationresult').text(data);
+						$('.wncu-calculationresult').addClass('wncu-calc-result-feild');
 
 					}, 500);
 				}
@@ -65,5 +67,42 @@
 				});
 			}
 		});
+
+
+		$('#wncu-calculationfield').keypress(function(event){
+
+			if(event.which != 8 && isNaN(String.fromCharCode(event.which))){
+				event.preventDefault(); 
+			}
+		});
+
+		$('#wncu-calculationfield').keyup(function(event) {
+
+		// skip for arrow keys
+		if(event.which >= 37 && event.which <= 40) return;
+
+			// format number
+			$(this).val(function(index, value) {
+				return value
+				.replace(/\D/g, "")
+				.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+				;
+			});
+		});
+
+
 	});
-})( jQuery );	
+
+})( jQuery );
+
+function findAndReplace(string, target, replacement) {
+
+	var i = 0, length = string.length;
+
+	for (i; i < length; i++) {
+		string = string.replace(target, replacement);
+	}
+	
+	return string;
+}
+
